@@ -28,7 +28,7 @@ export default function Navbar() {
                     <img
                         src="/sa.png"
                         alt="SA Logo"
-                        className="h-14 object-contain"
+                        className="h-24 w-auto object-contain"
                     />
                 </a>
 

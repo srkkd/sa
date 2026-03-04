@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import AboutUs from './components/AboutUs';
+import ScrollToTop from './components/ScrollToTop';
+import Home from './pages/Home';
+import WomensDay from './pages/WomensDay';
+import Aizhb from './pages/Aizhb';
+import Serik from './pages/Serik';
+import Aizere from './pages/Aizere';
 
 function App() {
   useEffect(() => {
@@ -50,29 +55,16 @@ function App() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen selection:bg-gray-900 selection:text-white font-sans antialiased">
+      <ScrollToTop />
       <Navbar />
 
-      <main className="overflow-hidden">
-        <Hero />
-        <AboutUs />
-      </main>
-
-      {/* High-End Editorial Footer */}
-      <footer className="py-20 px-10 bg-white border-t border-gray-50 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 relative z-10">
-          <div>
-            <h2 className="text-5xl md:text-7xl font-light text-gray-900 mb-2 -rotate-2" style={{ fontFamily: "'Dancing Script', 'Brush Script MT', cursive" }}>Forever</h2>
-            <p className="text-[10px] tracking-[0.5em] font-black text-rose-300 uppercase underline decoration-rose-50 underline-offset-4 mt-4">EST. 2025</p>
-          </div>
-
-          <div className="flex flex-col items-center md:items-end gap-6">
-            <div className="flex gap-12">
-              <span className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-300">BORN FOR LOVE</span>
-            </div>
-            <p className="text-[8px] font-black text-gray-100 uppercase tracking-widest mt-8">sa 03.03.2026 &copy; srk.</p>
-          </div>
-        </div>
-      </footer>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/womensday" element={<WomensDay />} />
+        <Route path="/aizhb" element={<Aizhb />} />
+        <Route path="/serik" element={<Serik />} />
+        <Route path="/aizere" element={<Aizere />} />
+      </Routes>
     </div>
   );
 }

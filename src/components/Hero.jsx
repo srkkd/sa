@@ -1,31 +1,33 @@
-
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Stars, Sparkles } from 'lucide-react';
 import { COUPLE } from '../config';
 
-function useDaysTogether() {
-    const [days, setDays] = useState(0);
+function useTimeTogether() {
+    const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
     useEffect(() => {
-        const calculateDays = () => {
+        const calculate = () => {
             const start = new Date(2025, 0, 1, 20, 20, 0); // Jan 1, 2025 at 20:20
             const now = new Date();
-            const diffTime = Math.abs(now - start);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            setDays(diffDays);
+            const diff = Math.abs(now - start);
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            setTime({ days, hours, minutes, seconds });
         };
 
-        calculateDays();
-        // Update every minute just in case
-        const timer = setInterval(calculateDays, 60000);
+        calculate();
+        const timer = setInterval(calculate, 1000);
         return () => clearInterval(timer);
     }, []);
-    return days;
+    return time;
 }
 
 export default function Hero() {
-    const days = useDaysTogether();
+    const { days, hours, minutes, seconds } = useTimeTogether();
 
     return (
         <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center pt-24 overflow-hidden bg-white">
@@ -46,10 +48,7 @@ export default function Hero() {
                         </h1>
                     </div>
                     <div className="w-full sm:w-auto flex justify-center xl:justify-start pointer-events-auto mt-8 xl:mt-0 xl:absolute xl:top-0 xl:left-[35rem]">
-                        <motion.img
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.3, duration: 0.8 }}
+                        <img
                             src="/SA2.png"
                             alt="Serik and Aizere Art"
                             className="w-[200px] sm:w-[240px] md:w-[280px] xl:w-[320px] object-contain shrink-0"
@@ -74,6 +73,24 @@ export default function Hero() {
                         </span>
                         <span className="text-2xl text-rose-300 font-light lowercase font-display italic">дня</span>
                     </div>
+
+                    {/* Real-time sub-counter */}
+                    <div className="flex items-center gap-4 mt-4 text-gray-300">
+                        <div className="text-center">
+                            <div className="text-lg font-black text-gray-600">{String(hours).padStart(2, '0')}</div>
+                            <div className="text-[8px] uppercase tracking-widest font-bold">ч</div>
+                        </div>
+                        <span className="text-lg font-black text-rose-200">:</span>
+                        <div className="text-center">
+                            <div className="text-lg font-black text-gray-600">{String(minutes).padStart(2, '0')}</div>
+                            <div className="text-[8px] uppercase tracking-widest font-bold">мин</div>
+                        </div>
+                        <span className="text-lg font-black text-rose-200">:</span>
+                        <div className="text-center">
+                            <div className="text-lg font-black text-rose-400">{String(seconds).padStart(2, '0')}</div>
+                            <div className="text-[8px] uppercase tracking-widest font-bold">сек</div>
+                        </div>
+                    </div>
                 </motion.div>
 
                 {/* Soft Luxury Stats */}
@@ -96,10 +113,7 @@ export default function Hero() {
                 </motion.div>
             </div>
 
-            {/* Warm Floating Icons */}
-            <div className="absolute top-[20%] right-[10%] text-rose-200 animate-float opacity-40 pointer-events-none">
-                <Stars size={40} strokeWidth={1} />
-            </div>
+
             <div className="absolute bottom-[15%] left-[10%] text-rose-100 animate-float-slow opacity-60 pointer-events-none">
                 <Heart size={64} fill="currentColor" strokeWidth={0} />
             </div>

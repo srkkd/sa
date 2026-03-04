@@ -3,11 +3,13 @@ export const COUPLE = {
     person1: "Serik",
     person2: "Aizere",
     startDate: "2025-01-01",
-    song: {
-        title: "Женщина",
-        artist: "",
-        url: "/песня.mp3",
-    },
+    playlist: [
+        { title: "Женщина", url: "/песня.mp3" },
+        { title: "sa.", url: "/love.mp3" },
+        { title: "sa.", url: "/you.mp3" },
+        { title: "sa.", url: "/carlos.mp3" },
+        { title: "Mahabbatym", url: "/Mahabbatym.mp3" }
+    ],
 };
 
 export const IMPORTANT_DATES = [

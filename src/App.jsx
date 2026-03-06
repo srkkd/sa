@@ -7,6 +7,32 @@ import WomensDay from './pages/WomensDay';
 import Aizhb from './pages/Aizhb';
 import Serik from './pages/Serik';
 import Aizere from './pages/Aizere';
+import April2 from './pages/April2';
+import Login from './pages/Login';
+import Admin from './pages/Admin';
+import { AppProvider, useAppContext } from './context/AppContext';
+import { Navigate } from 'react-router-dom';
+
+// Protected route wrapper for any main page
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useAppContext();
+  // Ensure we do strict boolean checking and redirect
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  return children;
+};
+
+// Toggle-dependent wrapper specifically for Aizhb
+const AizhbRoute = ({ children }) => {
+  const { isAuthenticated, isAizhbEnabled } = useAppContext();
+
+  // First wall: Auth
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+
+  // Second wall: Admin Toggle
+  if (!isAizhbEnabled) return <Navigate to="/" replace />;
+
+  return children;
+};
 
 function App() {
   useEffect(() => {
@@ -54,18 +80,29 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen selection:bg-gray-900 selection:text-white font-sans antialiased">
-      <ScrollToTop />
-      <Navbar />
+    <AppProvider>
+      <div className="bg-white text-gray-900 min-h-screen selection:bg-gray-900 selection:text-white font-sans antialiased">
+        <ScrollToTop />
+        <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/womensday" element={<WomensDay />} />
-        <Route path="/aizhb" element={<Aizhb />} />
-        <Route path="/serik" element={<Serik />} />
-        <Route path="/aizere" element={<Aizere />} />
-      </Routes>
-    </div>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/7775" element={<Admin />} />
+
+          {/* All protected routes MUST be wrapped so a direct URL jump is caught */}
+          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/womensday" element={<ProtectedRoute><WomensDay /></ProtectedRoute>} />
+          <Route path="/serik" element={<ProtectedRoute><Serik /></ProtectedRoute>} />
+          <Route path="/aizere" element={<ProtectedRoute><Aizere /></ProtectedRoute>} />
+          <Route path="/april2" element={<ProtectedRoute><April2 /></ProtectedRoute>} />
+
+          <Route path="/aizhb" element={<AizhbRoute><Aizhb /></AizhbRoute>} />
+
+          {/* Catch-all to send unknown links to home (which redirects to login if unauth) */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </AppProvider>
   );
 }
 

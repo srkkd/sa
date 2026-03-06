@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import MusicPlayer from './MusicPlayer';
+import { useAppContext } from '../context/AppContext';
 
 const NAV_LINKS = [
     { href: '/', label: 'Главная', special: false },
@@ -13,6 +14,18 @@ const NAV_LINKS = [
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const { isAizhbEnabled, isAuthenticated } = useAppContext();
+
+    const visibleLinks = NAV_LINKS.filter(l => {
+        // If the path is protected (any path other than maybe home if it wasn't protected), 
+        // hide it if not authenticated.
+        if (l.href !== '/login' && !isAuthenticated) return false;
+
+        // Admin toggle for /aizhb
+        if (l.href === '/aizhb' && !isAizhbEnabled) return false;
+
+        return true;
+    });
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -34,7 +47,7 @@ export default function Navbar() {
 
                 {/* Desktop Menu */}
                 <nav className="hidden md:flex items-center gap-12">
-                    {NAV_LINKS.map(l => (
+                    {visibleLinks.map(l => (
                         <Link
                             key={l.href}
                             to={l.href}
@@ -62,7 +75,7 @@ export default function Navbar() {
                 className={`md:hidden absolute top-full right-6 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-rose-100/50 z-50 p-6 flex flex-col gap-6 transition-all duration-300 ${menuOpen ? 'opacity-100 scale-100 pointer-events-auto mt-2' : 'opacity-0 scale-95 pointer-events-none mt-0'}`}
             >
                 <nav className="flex flex-col gap-4">
-                    {NAV_LINKS.map((l, i) => (
+                    {visibleLinks.map((l, i) => (
                         <Link
                             key={l.href}
                             to={l.href}

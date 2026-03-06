@@ -75,6 +75,8 @@ export default function Aizere() {
                     src="/aiz.png"
                     alt="Aizere"
                     className="absolute top-[7%] left-0 w-40 opacity-70 select-none pointer-events-none md:hidden"
+                    loading="lazy"
+                    decoding="async"
                 />
 
                 <div className="absolute top-[12%] md:top-[40%] right-0 text-[30vw] font-black text-rose-900 leading-none select-none pointer-events-none tracking-tighter pr-4">

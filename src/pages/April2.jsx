@@ -149,6 +149,8 @@ export default function April2() {
                             alt="Birthday Bouquet"
                             className="w-full h-auto object-contain pointer-events-none opacity-90"
                             style={{ maxHeight: '60vh' }}
+                            loading="lazy"
+                            decoding="async"
                         />
                     </div>
 
@@ -206,6 +208,8 @@ export default function April2() {
                                 src="/2april2.png"
                                 alt="Birthday Bouquet"
                                 className="w-full max-w-[140px] md:max-w-md h-auto object-contain drop-shadow-sm"
+                                loading="lazy"
+                                decoding="async"
                             />
                         </motion.div>
 
@@ -238,6 +242,8 @@ export default function April2() {
                                 src="/2april2.png"
                                 alt="Decorative flower"
                                 className="absolute -bottom-10 -right-6 md:w-64 w-32 h-auto object-contain pointer-events-none z-0 rotate-12"
+                                loading="lazy"
+                                decoding="async"
                             />
                         </div>
                     </div>
@@ -295,6 +301,8 @@ export default function April2() {
                                     "absolute left-[-40px] top-[-100%] w-36 h-auto object-contain z-0 pointer-events-none opacity-90" :
                                     "relative w-full max-w-[450px] h-auto object-contain z-10 md:scale-110 md:-translate-x-12"
                                 }
+                                loading="lazy"
+                                decoding="async"
                             />
                         </div>
 

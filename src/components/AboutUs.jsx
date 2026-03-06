@@ -130,7 +130,7 @@ export default function AboutUs() {
                     <div className="text-center pb-12">
                         <p className="text-gray-300 italic text-sm flex items-center justify-center gap-2 flex-wrap">
                             Вот так вот началась их история... и говорят, что Айзере сама добивалась его. Но мы-то знаем, как было на самом деле.
-                            <img src="/mem.GIF" alt="Мем" className="h-6 object-contain inline-block" />
+                            <img src="/mem.GIF" alt="Мем" className="h-6 object-contain inline-block" loading="lazy" decoding="async" />
                         </p>
                     </div>
                 </div>

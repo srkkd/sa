@@ -93,6 +93,8 @@ export default function WomensDay() {
                             src="/8march.png"
                             alt="8 March Flower"
                             className="w-full h-auto object-contain pointer-events-none opacity-80"
+                            loading="lazy"
+                            decoding="async"
                         />
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <h1
@@ -155,6 +157,8 @@ export default function WomensDay() {
                                 src="/8march2.png"
                                 alt="8 March Decoration"
                                 className="w-full max-w-[140px] md:max-w-md h-auto object-contain drop-shadow-sm"
+                                loading="lazy"
+                                decoding="async"
                             />
                         </motion.div>
 
@@ -187,6 +191,8 @@ export default function WomensDay() {
                                 src="/8march2.png"
                                 alt="Decorative flower"
                                 className="absolute -bottom-10 -right-6 md:w-64 w-32 h-auto object-contain pointer-events-none z-0 rotate-12"
+                                loading="lazy"
+                                decoding="async"
                             />
                         </div>
                     </div>
@@ -245,6 +251,8 @@ export default function WomensDay() {
                                     "absolute left-[-40px] top-[-100%] w-36 h-auto object-contain z-0 pointer-events-none opacity-90" :
                                     "relative w-full max-w-[550px] h-auto object-contain z-10 md:scale-125 md:-translate-x-12"
                                 }
+                                loading="lazy"
+                                decoding="async"
                             />
                         </div>
 
@@ -293,6 +301,8 @@ export default function WomensDay() {
                             "absolute right-[-40px] bottom-4 w-36 h-auto object-contain z-0 pointer-events-none grayscale opacity-30" :
                             "absolute md:-bottom-20 md:-right-20 w-[600px] h-auto object-contain grayscale pointer-events-none z-0 opacity-20"
                         }
+                        loading="lazy"
+                        decoding="async"
                     />
 
                     {/* Bottom Wavy Transition */}

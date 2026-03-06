@@ -42,6 +42,8 @@ export default function Navbar() {
                         src="/sa.png"
                         alt="SA Logo"
                         className="h-24 w-auto object-contain"
+                        loading="lazy"
+                        decoding="async"
                     />
                 </Link>
 

@@ -52,6 +52,8 @@ export default function Hero() {
                             src="/SA2.png"
                             alt="Serik and Aizere Art"
                             className="w-[200px] sm:w-[240px] md:w-[280px] xl:w-[320px] object-contain shrink-0"
+                            loading="lazy"
+                            decoding="async"
                         />
                     </div>
                 </div>

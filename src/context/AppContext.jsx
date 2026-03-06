@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 const AppContext = createContext();
 
@@ -8,37 +9,48 @@ export function AppProvider({ children }) {
         return sessionStorage.getItem('sa_auth') === 'true';
     });
 
-    // Toggle stays global and synced via server
+    // Toggle stays global and synced via Supabase
     const [isAizhbEnabled, setIsAizhbEnabled] = useState(false);
 
-    // Sync isAizhbEnabled from server (polling)
+    // Initial fetch and Realtime subscription
     useEffect(() => {
-        const fetchToggleState = async () => {
+        const fetchAndSubscribe = async () => {
+            // 1. Initial fetch
             try {
-                const res = await fetch('/api/state');
-                const data = await res.json();
-                setIsAizhbEnabled(data.isAizhbEnabled);
-            } catch (e) {
-                console.error('Failed to sync toggle state:', e);
+                const { data, error } = await supabase
+                    .from('settings')
+                    .select('is_aizhb_enabled')
+                    .eq('id', 1)
+                    .single();
+
+                if (data) {
+                    setIsAizhbEnabled(data.is_aizhb_enabled);
+                }
+            } catch (err) {
+                console.error('Supabase fetch error:', err);
             }
+
+            // 2. Subscribe to changes
+            const channel = supabase
+                .channel('settings_changes')
+                .on(
+                    'postgres_changes',
+                    { event: 'UPDATE', schema: 'public', table: 'settings', filter: 'id=eq.1' },
+                    (payload) => {
+                        if (payload.new && payload.new.is_aizhb_enabled !== undefined) {
+                            setIsAizhbEnabled(payload.new.is_aizhb_enabled);
+                        }
+                    }
+                )
+                .subscribe();
+
+            return () => {
+                supabase.removeChannel(channel);
+            };
         };
 
-        fetchToggleState();
-        const interval = setInterval(fetchToggleState, 2000);
-        return () => clearInterval(interval);
+        fetchAndSubscribe();
     }, []);
-
-    const updateServerToggle = async (value) => {
-        try {
-            await fetch('/api/state', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ isAizhbEnabled: value })
-            });
-        } catch (e) {
-            console.error('Failed to update server toggle:', e);
-        }
-    };
 
     const login = async (pin) => {
         if (pin === '2020') {
@@ -56,8 +68,21 @@ export function AppProvider({ children }) {
 
     const toggleAizhb = async () => {
         const newValue = !isAizhbEnabled;
+        // Optimistic update
         setIsAizhbEnabled(newValue);
-        await updateServerToggle(newValue);
+
+        // Push to Supabase
+        try {
+            const { error } = await supabase
+                .from('settings')
+                .upsert({ id: 1, is_aizhb_enabled: newValue });
+
+            if (error) {
+                console.error('Error updating Supabase:', error);
+            }
+        } catch (err) {
+            console.error('Supabase upsert error:', err);
+        }
     };
 
     return (

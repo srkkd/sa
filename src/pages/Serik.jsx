@@ -115,6 +115,8 @@ export default function Serik() {
                     src="/srk.png"
                     alt="Serik"
                     className="absolute top-[7%] left-0 w-40 opacity-70 select-none pointer-events-none md:hidden"
+                    loading="lazy"
+                    decoding="async"
                 />
                 <div className="absolute top-[12%] md:top-[40%] right-0 text-[30vw] font-black text-[#1e2a4a]/4 leading-none select-none pointer-events-none tracking-tighter pr-4">
                     S.
